@@ -1,41 +1,25 @@
 import streamlit as st
-from streamlit_webrtc import webrtc_streamer, AudioProcessorBase
-import numpy as np
+from audio_recorder_streamlit import audio_recorder
 from gtts import gTTS
 import tempfile
 
-st.title("🎤 Voice Bot (Streamlit Cloud Ready)")
+st.title("🎤 Voice Bot (Stable Version)")
 
-class AudioProcessor(AudioProcessorBase):
-    def __init__(self):
-        self.audio_data = []
+# Record audio from browser
+audio_bytes = audio_recorder()
 
-    def recv(self, frame):
-        audio = frame.to_ndarray()
-        self.audio_data.append(audio)
-        return frame
+if audio_bytes:
+    st.audio(audio_bytes, format="audio/wav")
 
-ctx = webrtc_streamer(
-    key="speech",
-    audio_processor_factory=AudioProcessor,
-    media_stream_constraints={"audio": True, "video": False},
-)
+    # --- Dummy Processing (replace with Gemini later) ---
+    response_text = "Hello, I heard you clearly!"
 
-if st.button("🧠 Process Voice"):
-    if ctx.audio_processor:
-        audio_chunks = ctx.audio_processor.audio_data
+    # Convert to speech
+    tts = gTTS(response_text)
+    temp_file = tempfile.NamedTemporaryFile(delete=False, suffix=".mp3")
+    tts.save(temp_file.name)
 
-        if audio_chunks:
-            audio_np = np.concatenate(audio_chunks, axis=0)
+    st.success(f"Response: {response_text}")
 
-            # Dummy response (replace with Gemini)
-            response_text = "Hello, I heard you!"
-
-            # Convert to speech
-            tts = gTTS(response_text)
-            temp_file = tempfile.NamedTemporaryFile(delete=False, suffix=".mp3")
-            tts.save(temp_file.name)
-
-            st.audio(temp_file.name)
-        else:
-            st.warning("No audio captured")
+    # Auto play response
+    st.audio(temp_file.name)
