@@ -3,3 +3,8 @@ streamlit-webrtc==0.47.7
 aiortc==1.6.0
 numpy
 gtts
+google-genai
+streamlit
+sounddevice
+gtts
+numpy
