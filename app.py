@@ -2,6 +2,8 @@ import streamlit as st
 from audio_recorder_streamlit import audio_recorder
 from gtts import gTTS
 import tempfile
+from google import genai
+from google.genai import types
 
 st.title("🎤 Voice Bot (Stable Version)")
 
