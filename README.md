@@ -42,7 +42,7 @@ voice-bot/
 ## 1. Clone the Repository
 
 ```bash
-git clone https://github.com/your-username/voice-bot.git
+git clone https://github.com/vrushankdhande/voice-bot.git
 cd voice-bot
 ```
 
